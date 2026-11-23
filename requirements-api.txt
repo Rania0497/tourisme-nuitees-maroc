@@ -1,0 +1,8 @@
+# Seulement ce dont l'API a besoin (pour l'image Docker, plus légère)
+# scikit-learn DOIT être la même version que celle qui a créé model.pkl
+fastapi==0.165.0
+uvicorn==0.54.0
+scikit-learn==1.7.2
+pandas==2.2.3
+numpy==2.2.6
+joblib==1.5.2

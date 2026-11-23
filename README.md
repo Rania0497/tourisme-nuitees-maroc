@@ -45,3 +45,10 @@ Puis ouvrir http://127.0.0.1:5000
 - `data/raw.dvc` : le ticket DVC des données brutes
 - `pipeline.py` : version TP2 (MLflow + registre)
 - `params.yaml` : les réglages
+
+## API (étape 8)
+```powershell
+uvicorn api.main:app --reload          # puis http://127.0.0.1:8000/docs
+docker build -t nuitees-api:1.0 .
+docker run -d --name nuitees -p 8000:8000 nuitees-api:1.0
+```
