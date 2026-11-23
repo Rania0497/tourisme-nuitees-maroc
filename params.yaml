@@ -1,0 +1,5 @@
+# Réglages du projet (comme dans le TP2)
+donnees:
+  nuitees_brut: data/raw/nuitees.xlsx
+  lits_brut: data/raw/lits.xlsx
+  table_propre: data/processed/tourisme.csv
