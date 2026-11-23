@@ -1,5 +1,17 @@
-# Réglages du projet (comme dans le TP2)
+# Réglages du projet (comme dans le TP2) : aucun chiffre de réglage dans le code
 donnees:
   nuitees_brut: data/raw/nuitees.xlsx
   lits_brut: data/raw/lits.xlsx
   table_propre: data/processed/tourisme.csv
+
+preparation:
+  annee_test: 2019          # on apprend sur 2014-2018, on teste sur 2019
+  annees_exclues: [2020]    # COVID : année anormale, mise de côté
+
+entrainement:
+  alpha: 1.0                # force du "frein" de la régression Ridge
+
+validation:
+  # Le modèle doit faire mieux que la "méthode naïve" :
+  # dire que cette année = l'année dernière (nuitees_lag1)
+  doit_battre_naif: true

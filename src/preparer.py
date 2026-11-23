@@ -3,9 +3,12 @@
 Lit les 2 fichiers Excel de data.gov.ma (nuitées et lits),
 les met au même format, les colle ensemble, puis ajoute
 les nuitées des années d'avant (lag1, lag2).
+Enfin, coupe le tableau en 2 : train (pour apprendre) et test (pour noter).
 
 Lancer depuis le dossier du projet :  python src/preparer.py
 """
+import os
+
 import pandas as pd
 import yaml
 
@@ -41,7 +44,9 @@ def ajouter_lags(df):
 
 
 def main():
-    params = yaml.safe_load(open("params.yaml"))["donnees"]
+    tout = yaml.safe_load(open("params.yaml", encoding="utf-8"))
+    params = tout["donnees"]
+    p_prep = tout["preparation"]
 
     nuitees = nettoyer_noms(lire_excel_large(params["nuitees_brut"], "nuitees"))
     lits = nettoyer_noms(lire_excel_large(params["lits_brut"], "lits"))
@@ -51,16 +56,23 @@ def main():
     table = nuitees.merge(lits, on=["ville", "annee"], how="inner")
     table = ajouter_lags(table)
 
-    # Repère COVID : 2020 est une année anormale
-    table["covid"] = (table["annee"] == 2020).astype(int)
-
     for col in ["nuitees", "lits", "nuitees_lag1", "nuitees_lag2"]:
         table[col] = table[col].astype(int)
 
+    os.makedirs(os.path.dirname(params["table_propre"]), exist_ok=True)
     table.to_csv(params["table_propre"], index=False)
     print(f"OK : {len(table)} lignes, {table['ville'].nunique()} villes, "
           f"années {table['annee'].min()}-{table['annee'].max()}")
-    print(table.head(8).to_string(index=False))
+
+    # Découpage dans le TEMPS (pas au hasard) : on apprend sur le passé,
+    # on teste sur l'année suivante, comme dans la vraie vie.
+    table = table[~table["annee"].isin(p_prep["annees_exclues"])]
+    train = table[table["annee"] < p_prep["annee_test"]]
+    test = table[table["annee"] == p_prep["annee_test"]]
+    os.makedirs("data/prepare", exist_ok=True)
+    train.to_csv("data/prepare/train.csv", index=False)
+    test.to_csv("data/prepare/test.csv", index=False)
+    print(f"preparation : {len(train)} lignes train / {len(test)} lignes test")
 
 
 if __name__ == "__main__":
