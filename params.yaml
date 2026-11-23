@@ -15,3 +15,7 @@ validation:
   # Le modèle doit faire mieux que la "méthode naïve" :
   # dire que cette année = l'année dernière (nuitees_lag1)
   doit_battre_naif: true
+
+automl:
+  budget_s: 60              # temps de recherche de FLAML (secondes)
+  familles: [lgbm, rf, xgboost, extra_tree, enet, lassolars]

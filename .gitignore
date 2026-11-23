@@ -11,3 +11,6 @@ mlruns/
 # Captures d'écran pour le rapport
 captures/
 # ATTENTION : pas de data/, models/ ni reports/ ici : DVC s'en charge
+# Sorties de l etape AutoML (refaites par src/automl.py)
+models/model_automl.pkl
+reports/flaml.log
