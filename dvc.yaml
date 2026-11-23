@@ -1,0 +1,46 @@
+# Le pipeline décrit pour DVC (remplace pipeline.py pour l'enchaînement)
+# DVC relance une étape seulement si un de ses deps ou params a changé.
+stages:
+  preparer:
+    cmd: python src/preparer.py
+    deps:
+      - data/raw
+      - src/preparer.py
+    params:
+      - donnees
+      - preparation
+    outs:
+      - data/processed/tourisme.csv
+      - data/prepare/train.csv
+      - data/prepare/test.csv
+
+  explorer:
+    cmd: python src/explorer.py
+    deps:
+      - data/processed/tourisme.csv
+      - src/explorer.py
+    outs:
+      - reports/figures
+
+  entrainer:
+    cmd: python src/entrainer.py
+    deps:
+      - data/prepare/train.csv
+      - src/entrainer.py
+    params:
+      - entrainement.alpha
+    outs:
+      - models/model.pkl
+
+  evaluer:
+    cmd: python src/evaluer.py
+    deps:
+      - data/prepare/test.csv
+      - models/model.pkl
+      - src/evaluer.py
+      - src/entrainer.py
+    outs:
+      - reports/predictions.png
+    metrics:
+      - reports/metrics.json:
+          cache: false

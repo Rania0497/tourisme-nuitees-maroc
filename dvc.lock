@@ -1,0 +1,101 @@
+schema: '2.0'
+stages:
+  preparer:
+    cmd: python src/preparer.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 135dc3002454d386bf33ec3d2dd51215.dir
+      size: 19189
+      nfiles: 2
+    - path: src/preparer.py
+      hash: md5
+      md5: 4f3e20e7205679cab92c27cbc3b31b07
+      size: 3000
+    params:
+      params.yaml:
+        donnees:
+          nuitees_brut: data/raw/nuitees.xlsx
+          lits_brut: data/raw/lits.xlsx
+          table_propre: data/processed/tourisme.csv
+        preparation:
+          annee_test: 2019
+          annees_exclues:
+          - 2020
+    outs:
+    - path: data/prepare/test.csv
+      hash: md5
+      md5: 8af591d913153b36743a5f14365e9bed
+      size: 596
+    - path: data/prepare/train.csv
+      hash: md5
+      md5: a65178ba6dfb967d96252df6b988c9a9
+      size: 2746
+    - path: data/processed/tourisme.csv
+      hash: md5
+      md5: 872a0b1998ee1b37889987ab772a9440
+      size: 3829
+  explorer:
+    cmd: python src/explorer.py
+    deps:
+    - path: data/processed/tourisme.csv
+      hash: md5
+      md5: 872a0b1998ee1b37889987ab772a9440
+      size: 3829
+    - path: src/explorer.py
+      hash: md5
+      md5: 50768fe3401a8f82dc68960f73ee0a1b
+      size: 2796
+    outs:
+    - path: reports/figures
+      hash: md5
+      md5: 430c265ebb4ee15cb9d50faf54eed5f6.dir
+      size: 136345
+      nfiles: 3
+  entrainer:
+    cmd: python src/entrainer.py
+    deps:
+    - path: data/prepare/train.csv
+      hash: md5
+      md5: a65178ba6dfb967d96252df6b988c9a9
+      size: 2746
+    - path: src/entrainer.py
+      hash: md5
+      md5: 16bd1bdc05aac3777d121b1bb13fa1b6
+      size: 2076
+    params:
+      params.yaml:
+        entrainement.alpha: 1.0
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 7e7512c9e2787b6d481ec5151e4faa00
+      size: 4130
+  evaluer:
+    cmd: python src/evaluer.py
+    deps:
+    - path: data/prepare/test.csv
+      hash: md5
+      md5: 8af591d913153b36743a5f14365e9bed
+      size: 596
+    - path: models/model.pkl
+      hash: md5
+      md5: 7e7512c9e2787b6d481ec5151e4faa00
+      size: 4130
+    - path: src/entrainer.py
+      hash: md5
+      md5: 16bd1bdc05aac3777d121b1bb13fa1b6
+      size: 2076
+    - path: src/evaluer.py
+      hash: md5
+      md5: 47cca9d2b257b2230e1247932233e6c2
+      size: 1792
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 58ff2ffc801fe477924c8427749bba05
+      size: 61
+    - path: reports/predictions.png
+      hash: md5
+      md5: 33ceac26b00fb757ca437c6a720b0abb
+      size: 41783
