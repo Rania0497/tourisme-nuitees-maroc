@@ -23,10 +23,12 @@ mlflow server --host 127.0.0.1 --port 5000 --backend-store-uri sqlite:///mlflow.
 Terminal 2 : le travail
 ```powershell
 .venv\Scripts\Activate.ps1
-python src/preparer.py     # tableau propre + découpage train/test
-python src/explorer.py     # graphiques dans reports/figures/
-python pipeline.py         # preparer -> entrainer -> evaluer, suivi dans MLflow
+dvc pull                   # récupère les données depuis le stockage DVC
+dvc repro                  # preparer -> explorer -> entrainer -> evaluer (seulement ce qui a changé)
+dvc metrics show           # affiche la MAE
+python src/journaliser.py  # relie le run MLflow à l'empreinte des données
 ```
+`pipeline.py` (TP2) reste pour enregistrer un modèle validé dans le registre MLflow.
 Puis ouvrir http://127.0.0.1:5000
 
 ## Résultat (année test 2019)
@@ -39,5 +41,7 @@ Puis ouvrir http://127.0.0.1:5000
 - `data/raw/` : les fichiers Excel d'origine
 - `data/processed/tourisme.csv` : le tableau propre
 - `src/` : preparer, explorer, entrainer, evaluer
-- `pipeline.py` : enchaîne les étapes et enregistre tout dans MLflow
+- `dvc.yaml` / `dvc.lock` : le pipeline DVC et sa « photo »
+- `data/raw.dvc` : le ticket DVC des données brutes
+- `pipeline.py` : version TP2 (MLflow + registre)
 - `params.yaml` : les réglages

@@ -2,12 +2,12 @@
 .venv/
 __pycache__/
 *.pyc
-# Modèles et découpage générés (refaits par les scripts)
-models/
-data/prepare/
 # Stockage local de MLflow
 mlflow.db
 mlartifacts/
 mlruns/
 # Préférences de l'éditeur
 .vscode/
+# Captures d'écran pour le rapport
+captures/
+# ATTENTION : pas de data/, models/ ni reports/ ici : DVC s'en charge
