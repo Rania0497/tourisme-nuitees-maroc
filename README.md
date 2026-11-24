@@ -52,3 +52,14 @@ uvicorn api.main:app --reload          # puis http://127.0.0.1:8000/docs
 docker build -t nuitees-api:1.0 .
 docker run -d --name nuitees -p 8000:8000 nuitees-api:1.0
 ```
+
+## Interface (étape 8c)
+```powershell
+streamlit run app/streamlit_app.py     # l'API doit tourner sur le port 8000
+```
+
+## Tout lancer avec Docker Compose
+```powershell
+docker compose up --build      # API sur :8000, interface sur http://localhost:8501
+docker compose down            # tout arrêter
+```
