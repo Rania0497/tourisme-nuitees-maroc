@@ -1,0 +1,22 @@
+# Lance l'API et l'interface ensemble :  docker compose up --build
+services:
+  api:
+    build: .                      # utilise le Dockerfile de l'API
+    image: nuitees-api:1.0
+    ports:
+      - "8000:8000"
+
+  interface:
+    build:
+      context: .
+      dockerfile: Dockerfile.interface
+    image: nuitees-interface:1.0
+    ports:
+      - "8501:8501"
+    environment:
+      # dans Docker, l'interface appelle l'API par le nom du service "api"
+      - URL_API=http://api:8000/predict
+    volumes:
+      - ./data/processed:/app/data/processed:ro   # le tableau des villes
+    depends_on:
+      - api

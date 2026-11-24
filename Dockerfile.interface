@@ -1,0 +1,12 @@
+# Image de l'interface Streamlit (l'API a son propre Dockerfile)
+FROM python:3.12-slim
+WORKDIR /app
+# Les bibliotheques d'abord (elles changent rarement)
+COPY requirements-interface.txt .
+RUN pip install --no-cache-dir -r requirements-interface.txt
+# Puis le code de l'interface et son theme
+COPY app/ ./app/
+COPY .streamlit/ ./.streamlit/
+# Les donnees (data/processed) arrivent par un volume, voir compose.yaml
+EXPOSE 8501
+CMD ["streamlit", "run", "app/streamlit_app.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true"]

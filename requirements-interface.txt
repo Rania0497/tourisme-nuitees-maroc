@@ -1,0 +1,5 @@
+# Seulement ce dont l'interface a besoin (image Docker de l'interface)
+streamlit==1.67.0
+requests==2.34.2
+pandas==2.2.3
+numpy==2.2.6

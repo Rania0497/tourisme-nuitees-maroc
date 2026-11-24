@@ -1,0 +1,11 @@
+# NOUVEAU : thème clair aux couleurs du Maroc (lu automatiquement par Streamlit)
+[theme]
+base = "light"
+primaryColor = "#C4532D"              # terracotta
+backgroundColor = "#FBF6EF"           # sable clair
+secondaryBackgroundColor = "#F3E7D7"  # sable
+textColor = "#2B2420"                 # brun très foncé
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"               # cache le menu de développement

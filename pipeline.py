@@ -1,4 +1,4 @@
-"""Chef d'orchestre
+"""Chef d'orchestre (comme pipeline.py du TP2).
 
 Lance preparer -> entrainer -> evaluer, enregistre tout dans MLflow,
 et n'enregistre le modèle que s'il bat la méthode naïve.
